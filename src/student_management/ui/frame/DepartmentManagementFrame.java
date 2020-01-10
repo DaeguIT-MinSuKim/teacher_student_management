@@ -1,4 +1,4 @@
-package student_management.ui;
+package student_management.ui.frame;
 
 import student_management.dto.Department;
 import student_management.ui.panel.AbsItemPanel;

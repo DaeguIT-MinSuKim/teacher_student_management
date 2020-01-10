@@ -1,4 +1,4 @@
-package student_management.ui;
+package student_management.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,26 +10,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import student_management.dto.Student;
 import student_management.ui.panel.AbsItemPanel;
-import student_management.ui.panel.StudentPanel;
 
 @SuppressWarnings("serial")
-public class StudentManagementFrame extends JFrame implements ActionListener {
-	public static final int STUDENT_TYPE = 1;
-	public static final int DEPARTMENT_TYPE = 2;
-	public static final int TITLE_TYPE = 3;
+public abstract class AbsManagementFrame<T> extends JFrame implements ActionListener {
 	
 	private JPanel contentPane;
-	private AbsItemPanel<Student> pCenter;
+	//다른 부분
+	private AbsItemPanel<T> pCenter;
+	
 	private JPanel pSouth;
 	private JButton btnAdd;
 	private JButton btnCancel;
 
-	public StudentManagementFrame() {
+	public AbsManagementFrame() {
 		initialize();
+		
+		//다른 부분
+		pCenter = createItemPanel();
+
+		contentPane.add(pCenter, BorderLayout.CENTER);
 	}
 	
+	protected abstract AbsItemPanel<T> createItemPanel();
+
 	private void initialize() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -38,8 +42,6 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		pCenter = new StudentPanel();
-		contentPane.add(pCenter, BorderLayout.CENTER);
 		
 		pSouth = new JPanel();
 		contentPane.add(pSouth, BorderLayout.SOUTH);
@@ -61,14 +63,15 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 			btnAddActionPerformed(e);
 		}
 	}
+	
 	protected void btnAddActionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null, getItem());
 	}
+	
 	protected void btnCancelActionPerformed(ActionEvent e) {
 		pCenter.clearTf();
 	}
 	
-	private Student getItem() {
-		return pCenter.getItem();
-	}
+	//다른 부분
+	protected abstract T getItem();
 }
