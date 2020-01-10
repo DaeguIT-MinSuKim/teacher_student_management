@@ -1,4 +1,4 @@
-package student_management.ui;
+package student_management.ui.panel;
 
 import java.awt.GridLayout;
 
