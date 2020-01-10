@@ -7,6 +7,12 @@ import student_management.ui.panel.StudentPanel;
 @SuppressWarnings("serial")
 public class StudentManagementFrame extends AbsManagementFrame<Student> {
 	private StudentPanel studentPanel;
+	
+	
+	public StudentManagementFrame() {
+		super();
+	}
+
 	@Override
 	protected AbsItemPanel<Student> createItemPanel() {
 		studentPanel = new StudentPanel();
