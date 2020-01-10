@@ -3,7 +3,6 @@ package student_management.ui.panel;
 import java.awt.GridLayout;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
@@ -11,7 +10,7 @@ import javax.swing.border.TitledBorder;
 import student_management.dto.Department;
 
 @SuppressWarnings("serial")
-public class DepartmentPanel extends JPanel {
+public class DepartmentPanel extends AbsItemPanel<Department> {
 	private JLabel lblDeptNo;
 	private JTextField tfDeptNo;
 	private JLabel lblDeptName;
@@ -52,23 +51,25 @@ public class DepartmentPanel extends JPanel {
 		add(tfFloor);
 	}
 
-	public Department getDepartment() {
+	@Override
+	public void clearTf() {
+		tfDeptNo.setText("");
+		tfDeptName.setText("");
+		tfFloor.setText("");
+	}
+	
+	@Override
+	public Department getItem() {
 		int deptNo = Integer.parseInt(tfDeptNo.getText().trim());
 		String deptName = tfDeptName.getText().trim();
 		int floor = Integer.parseInt(tfFloor.getText().trim());
 		return new Department(deptNo, deptName, floor);
 	}
-	
-	public void setDepartment(Department dept) {
-		tfDeptNo.setText(dept.getDeptNo()+"");
-		tfDeptName.setText(dept.getDeptName());
-		tfFloor.setText(dept.getFloor()+"");
-	}
-	
-	public void clearTf() {
-		tfDeptNo.setText("");
-		tfDeptName.setText("");
-		tfFloor.setText("");
+	@Override
+	public void setItem(Department item) {
+		tfDeptNo.setText(item.getDeptNo()+"");
+		tfDeptName.setText(item.getDeptName());
+		tfFloor.setText(item.getFloor()+"");		
 	}
 	
 	
