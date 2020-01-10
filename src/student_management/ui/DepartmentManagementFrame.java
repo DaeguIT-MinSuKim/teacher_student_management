@@ -9,11 +9,12 @@ public class DepartmentManagementFrame extends AbsManagementFrame<Department> {
 	private DepartmentPanel deptPanel;
 	
 	public DepartmentManagementFrame() {
-		deptPanel = new DepartmentPanel();
+		
 	}
 
 	@Override
 	protected AbsItemPanel<Department> createItemPanel() {
+		deptPanel = new DepartmentPanel();
 		return deptPanel;
 	}
 
