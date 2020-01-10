@@ -11,27 +11,39 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import student_management.dto.Department;
 import student_management.dto.Student;
+import student_management.dto.Title;
+import student_management.ui.panel.AbsItemPanel;
+import student_management.ui.panel.DepartmentPanel;
 import student_management.ui.panel.StudentPanel;
+import student_management.ui.panel.TitlePanel;
 
 @SuppressWarnings("serial")
-public class StudentManagementFrame extends JFrame implements ActionListener {
-
+public class ManagementFrame<T> extends JFrame implements ActionListener {
+	public static final int STUDENT_TYPE = 1;
+	public static final int DEPARTMENT_TYPE = 2;
+	public static final int TITLE_TYPE = 3;
+	
 	private JPanel contentPane;
-	private StudentPanel pCenter;
+	private AbsItemPanel<T> pCenter;
 	private JPanel pSouth;
 	private JButton btnAdd;
 	private JButton btnCancel;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StudentManagementFrame frame = new StudentManagementFrame();
+					//1 : 학생 관리 2 : 학과관리
+					ManagementFrame<Student> frame = new ManagementFrame<>(ManagementFrame.STUDENT_TYPE);
 					frame.setVisible(true);
+					
+					ManagementFrame<Department> deptFrame = new ManagementFrame<>(ManagementFrame.DEPARTMENT_TYPE);
+					deptFrame.setVisible(true);
+					
+					ManagementFrame<Title> titleFrame = new ManagementFrame<>(ManagementFrame.TITLE_TYPE);
+					titleFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -39,13 +51,11 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public StudentManagementFrame() {
-		initialize();
+	public ManagementFrame(int type) {
+		initialize(type);
 	}
-	private void initialize() {
+	
+	private void initialize(int type) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -53,7 +63,7 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		pCenter = new StudentPanel();
+		pCenter = getCenterPanel(type);
 		contentPane.add(pCenter, BorderLayout.CENTER);
 		
 		pSouth = new JPanel();
@@ -68,6 +78,20 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 		pSouth.add(btnCancel);
 	}
 
+	@SuppressWarnings("unchecked")
+	private AbsItemPanel<T> getCenterPanel(int type) {
+		if (type == 1) {
+			return (AbsItemPanel<T>) new StudentPanel();
+		}
+		if (type==2) {
+			return (AbsItemPanel<T>) new DepartmentPanel();
+		}
+		if (type==3) {
+			return (AbsItemPanel<T>) new TitlePanel();
+		}
+		return null;
+	}
+
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCancel) {
 			btnCancelActionPerformed(e);
@@ -77,10 +101,13 @@ public class StudentManagementFrame extends JFrame implements ActionListener {
 		}
 	}
 	protected void btnAddActionPerformed(ActionEvent e) {
-		Student newStudent = pCenter.getStudent();
-		JOptionPane.showMessageDialog(null, newStudent);
+		JOptionPane.showMessageDialog(null, getItem());
 	}
 	protected void btnCancelActionPerformed(ActionEvent e) {
 		pCenter.clearTf();
+	}
+	
+	private T getItem() {
+		return pCenter.getItem();
 	}
 }
